@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+/* Dark mode is class-based so the header toggle can override the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. Every text/background pair below was checked for WCAG AA
+ * contrast (4.5:1 for body text) in both themes.
+ */
+:root {
+  color-scheme: light;
+  --bg: #fbf9ff;
+  --surface: #ffffff;
+  --surface-2: #f4f1fb;
+  --surface-3: #ebe6f7;
+  --border: #e6e0f2;
+  --border-strong: #d3cbe6;
+  --fg: #17131f;
+  --fg-muted: #5d5670;
+  --fg-subtle: #6c6580;
+  --brand: #7c3aed;
+  --brand-soft: #ede9fe;
+  --brand-soft-fg: #5b21b6;
+  --ring: #7c3aed;
+  --danger: #c81e1e;
+  --danger-soft: #fef2f2;
+  --success: #15803d;
+  --success-soft: #f0fdf4;
+  --warning: #b45309;
+  --warning-soft: #fffbeb;
+  /* Gradient text: every stop is >= 3:1 on --bg (headings are large text). */
+  --grad-text: linear-gradient(100deg, #7c3aed 0%, #db2777 55%, #ea580c 100%);
+  /* Gradient buttons: every stop is >= 4.5:1 against white text. */
+  --grad-button: linear-gradient(100deg, #7c3aed 0%, #db2777 55%, #cf4410 100%);
+  --shadow-rgb: 76 29 149;
+  --glass: rgb(255 255 255 / 0.7);
+  --glass-border: rgb(255 255 255 / 0.75);
+  --blob-opacity: 0.35;
+}
+
+.dark {
+  color-scheme: dark;
+  --bg: #0c0a12;
+  --surface: #16131f;
+  --surface-2: #1f1b2b;
+  --surface-3: #2a2539;
+  --border: #2b2639;
+  --border-strong: #3d3651;
+  --fg: #f4f1fb;
+  --fg-muted: #b3abc7;
+  --fg-subtle: #8f88a5;
+  --brand: #a78bfa;
+  --brand-soft: #2e1065;
+  --brand-soft-fg: #ddd6fe;
+  --ring: #c4b5fd;
+  --danger: #f87171;
+  --danger-soft: #2a1215;
+  --success: #4ade80;
+  --success-soft: #0f2418;
+  --warning: #fbbf24;
+  --warning-soft: #2a1f0a;
+  --grad-text: linear-gradient(100deg, #a78bfa 0%, #f472b6 55%, #fb923c 100%);
+  --shadow-rgb: 0 0 0;
+  --glass: rgb(22 19 31 / 0.62);
+  --glass-border: rgb(255 255 255 / 0.08);
+  --blob-opacity: 0.2;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-soft-fg: var(--brand-soft-fg);
+  --color-ring: var(--ring);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+
+  /* Inter for Latin text; Noto fonts pick up Tamil and Devanagari glyphs. */
+  --font-sans:
+    var(--font-inter), var(--font-noto-tamil), var(--font-noto-devanagari), ui-sans-serif, system-ui,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+  --font-display:
+    var(--font-bricolage), var(--font-noto-tamil), var(--font-noto-devanagari), ui-sans-serif,
+    system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+
+@theme {
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-scan: scan 2.2s ease-in-out infinite;
+  --animate-gradient: gradient-pan 6s ease infinite;
+  --animate-dialog-in: dialog-in 180ms ease-out;
+
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes scan {
+    0%,
+    100% {
+      top: 4%;
+    }
+    50% {
+      top: 92%;
+    }
+  }
+  @keyframes gradient-pan {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+}
+
+@utility bg-brand-gradient {
+  background-image: var(--grad-button);
+}
+
+@utility text-gradient {
+  background-image: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility glass {
+  background-color: var(--glass);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid var(--glass-border);
+}
+
+@utility shadow-soft {
+  box-shadow:
+    0 1px 2px rgb(var(--shadow-rgb) / 0.05),
+    0 12px 32px -12px rgb(var(--shadow-rgb) / 0.2);
+}
+
+@utility shadow-glow {
+  box-shadow: 0 10px 28px -10px rgb(219 39 119 / 0.55);
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: rgb(167 139 250 / 0.35);
+  }
+
+  /* Tamil and Devanagari glyphs are tall; give generated text room to breathe. */
+  :lang(ta),
+  :lang(hi) {
+    line-height: 1.75;
+  }
+
+  input[type="range"] {
+    accent-color: var(--brand);
+  }
+
+  dialog::backdrop {
+    background: rgb(12 10 18 / 0.55);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
